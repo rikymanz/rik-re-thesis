@@ -1,0 +1,51 @@
+my-app/
+│
+├── public/                     # File pubblici
+│   ├── index.html
+│   └── ...
+│
+├── src/                        # Codice sorgente
+│   ├── assets/                 # Risorse come immagini, font, ecc.
+│   │   └── ...
+│   ├── components/             # Componenti generici e riutilizzabili
+│   │   ├── Button/
+│   │   │   ├── Button.js
+│   │   │   ├── Button.test.js
+│   │   │   └── Button.css
+│   │   └── ...
+│   ├── features/               # Moduli specifici delle funzionalità
+│   │   ├── counter/
+│   │   │   ├── Counter.js
+│   │   │   ├── counterSlice.js
+│   │   │   ├── Counter.css
+│   │   │   ├── Counter.test.js
+│   │   │   └── ...
+│   │   └── ...
+│   ├── app/                    # Configurazione dell'app
+│   │   ├── store.js            # Configurazione del Redux store
+│   │   └── rootReducer.js      # Root reducer
+│   ├── hooks/                  # Custom hooks
+│   │   └── useCustomHook.js
+│   ├── pages/                  # Pagine principali dell'app
+│   │   ├── HomePage/
+│   │   │   ├── HomePage.js
+│   │   │   ├── HomePage.css
+│   │   │   └── HomePage.test.js
+│   │   └── ...
+│   ├── services/               # Servizi per chiamate API, ecc.
+│   │   ├── api.js
+│   │   └── ...
+│   ├── styles/                 # Stili globali
+│   │   ├── variables.css
+│   │   └── global.css
+│   ├── utils/                  # Utility e helper functions
+│   │   └── helper.js
+│   ├── index.js                # Punto di ingresso principale
+│   ├── App.js                  # Componente principale dell'app
+│   └── ...
+│
+├── .gitignore
+├── package.json
+├── README.md
+└── ...
+
