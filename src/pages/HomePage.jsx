@@ -1,12 +1,20 @@
+import { useEffect } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
 
+import styled from 'styled-components';
+
 import Loading from './../components/Loading';
+import NavBar from '../components/NavBar';
 
 import {
   initData,
+
+  setData,
+
   selectData,
   selectStatus,
 } from './../features/data/dataSlice'
+
 
 function HomePage() {
 
@@ -18,15 +26,26 @@ function HomePage() {
     dispatch( initData() )
   }
 
+  // all'avvio, e solo all'avvio del componente
+  useEffect(() => {
+      // viene controllato se esistono già i dati nel local storage
+      const tempData = JSON.parse(localStorage.getItem("data"));
+      // in caso esistano viene settato data con i dati presenti nel local storage
+      if( tempData ) dispatch(setData( tempData ))
+
+  }, []); // fine use effect
+
   return (
     <>
-      <div>
+      <NavBar />
+      <ContentDiv>
+
 
           {
             ( status === 'idle' && !data ) &&
             <button onClick={() => handleInit()}>
-              Init
-          </button>
+                Genera dati
+            </button>
           }
 
           {
@@ -38,11 +57,21 @@ function HomePage() {
             ( status === 'loading' ) &&
             <Loading />
           }
-          
-      </div>
+
+ 
+      </ContentDiv>
+      
 
     </>
   )
 }
+
+const ContentDiv = styled.div`
+  display:inline-block;
+  height:100vh;
+  width:85%;
+  vertical-align:top;
+  background:#fafafa;
+`
 
 export default HomePage
