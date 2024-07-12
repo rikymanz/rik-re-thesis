@@ -4,8 +4,10 @@ import { useSelector , useDispatch } from 'react-redux';
 import {  
     setData,
     setUser,
+    setPage,
+
+    selectPage
   
-    selectData,
 
   } from './../features/data/dataSlice'
   
@@ -13,6 +15,7 @@ import {
 const NavBar = () => {       
     
     const dispatch = useDispatch()
+    const page = useSelector( selectPage )
 
     const handleDeleteDataClick = () => {
         localStorage.removeItem("data");
@@ -30,7 +33,14 @@ const NavBar = () => {
                 <img style={{maxWidth:'90px'}} src={'/mineralia_logo_2.png'} />
             </NavElement>
             <NavElement>
-                <NavButton onClick={() => handleDeleteDataClick()}>
+                <NavButton selected={page === 1} onClick={() => dispatch(setPage(1))} >
+                    Dashboard
+                </NavButton>  
+                <NavButton selected={page === 2} onClick={() => dispatch(setPage(2))}>
+                    Tabelle
+                </NavButton> 
+
+                <NavButton onClick={() => handleDeleteDataClick()} >
                     Elimina dati 
                 </NavButton>  
                 <NavButton onClick={() => handleLogOutClick()}>
@@ -56,6 +66,7 @@ const NavElement = styled.div`
 const NavButton = styled.button`
     margin-top:15px;
     width:100%;
+    border:${ props => props.selected ? '1px solid blue' : 'default'}
 `
 
 

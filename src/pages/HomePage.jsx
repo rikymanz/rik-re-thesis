@@ -5,6 +5,8 @@ import styled from 'styled-components';
 
 import Loading from './../components/Loading';
 import NavBar from '../components/NavBar';
+import DashboardPage from './DashboardPage';
+import TablesPage from './TablesPage';
 
 import {
   initData,
@@ -13,6 +15,7 @@ import {
 
   selectData,
   selectStatus,
+  selectPage,
 } from './../features/data/dataSlice'
 
 
@@ -21,6 +24,7 @@ function HomePage() {
   const dispatch = useDispatch()
   const data = useSelector( selectData )
   const status = useSelector( selectStatus )
+  const page = useSelector( selectPage )
 
   const handleInit = () => {
     dispatch( initData() )
@@ -35,6 +39,8 @@ function HomePage() {
 
   }, []); // fine use effect
 
+  console.log( data )
+
   return (
     <>
       <NavBar />
@@ -43,14 +49,21 @@ function HomePage() {
 
           {
             ( status === 'idle' && !data ) &&
-            <button onClick={() => handleInit()}>
-                Genera dati
-            </button>
+            <div style={{textAlign:'center',paddingTop:250}}>
+                <button onClick={() => handleInit()}>
+                  Genera dati
+                </button>
+            </div>
+            
           }
 
           {
             ( status === 'idle' && data ) &&
-            <div>Dati valorizzati</div>
+            <>
+              { page === 1 && <DashboardPage />}
+              { page === 2 && <TablesPage />}
+
+            </>
           }
 
           {
