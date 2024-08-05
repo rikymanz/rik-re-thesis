@@ -17,7 +17,7 @@ function LoginPage() {
     return (
         <>
         <Content>
-            <LoginBox background={'rgb(217,217,217)'} >
+            <LoginBox >
         
                     
                     <ImageDiv>

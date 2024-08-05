@@ -39,7 +39,6 @@ function HomePage() {
 
   }, []); // fine use effect
 
-  console.log( data )
 
   return (
     <>

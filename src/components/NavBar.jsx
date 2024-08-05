@@ -27,6 +27,8 @@ const NavBar = () => {
         dispatch( setUser(null))
     }
     
+    
+    
     return (
         <MyNavBar>
             <NavElement style={{textAlign:'center'}}>

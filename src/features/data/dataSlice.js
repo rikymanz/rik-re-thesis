@@ -32,16 +32,15 @@ export const initData = createAsyncThunk(
     await new Promise(resolve => setTimeout(resolve, 2 * 1000))
     
     // numero di miniere da generare. Da  questo dipendono anche i dati successivi
-    const numRecords = 10;
     const data = {}
-    data.mines = generateMines(numRecords);
-    data.operations = generateOperations(numRecords * 5, data.mines);
-    data.marketPrices = generateMarketPrices(numRecords * 2);
-    data.resourceManagement = generateResourceManagement(numRecords * 5, data.mines);
-    data.environmentalImpact = generateEnvironmentalImpact(numRecords * 5, data.mines);
-    data.safetyRecords = generateSafetyRecords(numRecords * 5, data.mines);
-    data.productionPlanning = generateProductionPlanning(numRecords * 5, data.mines);
-    data.weatherData = generateWeatherData(numRecords * 5, data.mines);
+    data.mines = generateMines();
+    data.operations = generateOperations( data.mines);
+    data.marketPrices = generateMarketPrices();
+    data.resourceManagement = generateResourceManagement(data.mines);
+    data.environmentalImpact = generateEnvironmentalImpact( data.mines);
+    data.safetyRecords = generateSafetyRecords( data.mines);
+    data.productionPlanning = generateProductionPlanning( data.mines);
+    data.weatherData = generateWeatherData(data.mines);
 
     return data;
 
