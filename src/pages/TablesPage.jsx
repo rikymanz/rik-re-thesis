@@ -20,11 +20,8 @@ function TablesPage() {
             <option value="-">-</option>
             <option value="mines">Miniere</option>
             <option value="operations">Operazioni</option>
-            <option value="productionPlanning">Pianifica</option>
             <option value="marketPrices">Prezzi</option>
-            <option value="environmentalImpact">Impatto ambientale</option>
             <option value="weatherData">Dati metereologici</option>
-            <option value="safetyRecords">Registro sicurezza</option>
             <option value="resourceManagement">Gestione risorse</option>
 
         </Form.Select>

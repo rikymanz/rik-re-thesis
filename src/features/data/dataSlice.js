@@ -6,9 +6,6 @@ import {
     generateOperations,
     generateMarketPrices,
     generateResourceManagement,
-    generateEnvironmentalImpact,
-    generateSafetyRecords,
-    generateProductionPlanning,
     generateWeatherData
   } from './../../utils/dataGenerator';
 
@@ -37,9 +34,6 @@ export const initData = createAsyncThunk(
     data.operations = generateOperations( data.mines);
     data.marketPrices = generateMarketPrices();
     data.resourceManagement = generateResourceManagement(data.mines);
-    data.environmentalImpact = generateEnvironmentalImpact( data.mines);
-    data.safetyRecords = generateSafetyRecords( data.mines);
-    data.productionPlanning = generateProductionPlanning( data.mines);
     data.weatherData = generateWeatherData(data.mines);
 
     return data;
