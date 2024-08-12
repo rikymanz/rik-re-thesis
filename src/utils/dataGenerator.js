@@ -2,11 +2,11 @@
 
 // Minerali possibili da estrarre
 const mineralTypes = [
-    {name:"Ferro",price:0.1000},
-    {name:"Rame",price:7.5},
-    {name:"Platino",price:10000},
-    {name:"Oro",price:20000},
-    {name:"Argento",price:200},
+    {name:"Iridio",price:20000},
+    {name:"Rame",price:3},
+    {name:"Platino",price:3000},
+    {name:"Oro",price:8000},
+    {name:"Argento",price:70},
 ];
 
 // data inizio e fine della quale generare i dati
@@ -42,17 +42,26 @@ const randomWeather = ( date , zone ) => {
     let precipitation
     // zona 1 - zona arida
     if( zone === 1 ){
-      temperature = Math.floor(Math.random() * 15 ) + 30
-      const isRaining = Math.floor(Math.random() * 10 ) < 4 ? true : false
-      precipitation = isRaining ? Math.floor(Math.random() * 30 ) + 5 : 0
-    }else if(zone === 2){ //zona 2 temperata
-      temperature = Math.floor(Math.random() * 30 ) 
-      const isRaining = Math.floor(Math.random() * 10 ) < 7 ? true : false
-      precipitation = isRaining ? Math.floor(Math.random() * 100 ) + 5 : 0
+        temperature = Math.floor(Math.random() * 15 ) + 30
+        const isRaining = Math.floor(Math.random() * 10 ) < 4 ? true : false
+        precipitation = isRaining ? Math.floor(Math.random() * 30 ) + 5 : 0
+    }else if( zone === 2 ){ //zona 2 temperata
+        temperature = Math.floor(Math.random() * 30 ) 
+        const isRaining = Math.floor(Math.random() * 10 ) < 7 ? true : false
+        precipitation = isRaining ? Math.floor(Math.random() * 100 ) + 5 : 0
     }else{ //zona 3 fredda
-      temperature = Math.floor(Math.random() * 15 ) - 10
-      const isRaining = Math.floor(Math.random() * 10 ) < 7 ? true : false
-      precipitation = isRaining ? Math.floor(Math.random() * 150 ) + 5 : 0
+        temperature = Math.floor(Math.random() * 15 ) - 10
+        const isRaining = Math.floor(Math.random() * 10 ) < 7 ? true : false
+        precipitation = isRaining ? Math.floor(Math.random() * 150 ) + 5 : 0
+    }
+
+    const tempDate = new Date( date )
+    const month = tempDate.getMonth() + 1
+
+    if( month >= 10 && month <= 1 ){
+         temperature = temperature - Math.floor(Math.random() * 10 ) + 5
+    }else if( month >= 6 && month <= 9  ){
+        temperature = temperature + Math.floor(Math.random() * 10 ) + 5
     }
 
     return {temperature, precipitation}
@@ -147,31 +156,29 @@ const generateOperations = ( mines ) => {
       let i = 1
       // copia di miner per tenere i prezzi aggiornati
       const tempMineral = JSON.parse( JSON.stringify( mineralTypes ) )
-      // ogni 3 mesi partendo dalla data di inizio a quella di fine
-      for ( let date = new Date(startDate); new Date(date) <= new Date(endDate); date.setMonth(date.getMonth() + 3) ) {
+      // ogni 1 mesi partendo dalla data di inizio a quella di fine
+      for ( let date = new Date(startDate); new Date(date) <= new Date(endDate); date.setMonth(date.getMonth() + 1) ) {
           // per ognuno dei metalli
+          let row = {
+            id: i ,
+            date:getMyIsoDate(date),
+          }
           for (let index = 0; index < tempMineral.length; index++) {
               // true se salito, false se prezzo scende. Viene scelto casualmente. Ha il 60% di salire e 40 di scendere
               const isUp =  Math.floor(Math.random() * 10 ) > 3 ? true : false
               // percentuale di auomento / decremento
-              const percentage = Math.floor( Math.random() * 100 )
-              // calcolo variazione, 1,0x o 0,9x 
+              const percentage = Math.floor( Math.random() * 50 )
+              // calcolo variazione, massimo  1,05 o 0,95
               const variation = isUp ? 1 + percentage / 1000 : 1 - percentage / 1000 
               // viene moltiplicato il valore sopra al prezzo
               tempMineral[index].price = variation * tempMineral[index].price
-              // prezzo da inserire in tabella
-              const price = {
-                id: i ,
-                date:getMyIsoDate(date),
-                mineral_type:tempMineral[index].name,
-                price: tempMineral[index].price.toFixed(3) // prezzo con due cifre decimali
-              };
-
-              // aggiunta a tabella 
-              prices.push(price)
-              // incremendo per ID
-              i ++
+              // valore del metallo 
+              row[tempMineral[index].name] = tempMineral[index].price.toFixed(3)
           } // fine for metalli
+          // aggiunta a tabella 
+          prices.push(row)
+          // incremendo per ID
+          i ++
         
       } // fine for periodo di tre mesi
       return prices;
@@ -220,14 +227,15 @@ const generateOperations = ( mines ) => {
         // per ogni miniera attiva in quel periodo  - vengono generati numeri casuali per il consumo
         for (let index = 0; index < tempMines.length; index++) {
             const mine = tempMines[index];
+            const {temperature, precipitation}  = randomWeather( date , mine.zone)
             // compilazione oggetto da inserire
             const resource = {
               id: i,
               location: mine.location,
               date: getMyIsoDate(date),
               // numero casuali per l'utilizzo di risorse
-              temperature: (Math.random() * 50 - 10).toFixed(2),
-              precipitation: (Math.random() * 200).toFixed(2),
+              temperature,
+              precipitation,
             };
             weather.push(resource);
             i ++

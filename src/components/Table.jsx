@@ -66,7 +66,7 @@ const MyTitlesDiv = styled.div`
 
 const MyTitleCol = styled.div`
     display:inline-block;
-    width:15%;
+    width:14%;
     padding:2px 20px;
     white-space: nowrap;
     overflow: hidden;
@@ -84,7 +84,7 @@ const MyValueRow = styled.div`
 
 const MyValueCol = styled.div`
     display:inline-block;
-    width:15%;
+    width:14%;
     padding:2px 20px;
     white-space: nowrap;
     overflow: hidden;

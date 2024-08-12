@@ -5,6 +5,7 @@ import './App.css'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage';
 import Loading from './components/Loading';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 import {
   selectUser,
