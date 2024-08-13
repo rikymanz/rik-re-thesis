@@ -3,7 +3,6 @@
 // Minerali possibili da estrarre
 const mineralTypes = [
     {name:"Iridio",price:20000},
-    {name:"Rame",price:3},
     {name:"Platino",price:3000},
     {name:"Oro",price:8000},
     {name:"Argento",price:70},
@@ -83,6 +82,7 @@ const generateMines = ( ) => {
     // creazione di ogni singola miniera
     for (let i = 0; i < n; i++) {
       const tempYear = prevDate.getFullYear() + 2  
+      const mineral = i === 0 ? 'Oro' : i === 1 ? 'Argento' : i === 2 ? 'Iridio' : i === 3 ? 'Platino' : mineralTypes[Math.floor(Math.random() * mineralTypes.length)].name
       const mine = {
         // id progressivo
         id: i + 1, 
@@ -93,7 +93,7 @@ const generateMines = ( ) => {
         // zona della location - da 1 a 3 casuale. Ogni zona ha i suoi clima 
         zone: Math.floor(Math.random() * 3 ) + 1,
         // Tipo di minerale scelto da mineralTypes , array iniziale
-        type_of_mineral: mineralTypes[Math.floor(Math.random() * mineralTypes.length)].name,
+        type_of_mineral: mineral,
         // data di inizio, compreso casualmente tra la data di inizio della miniera precedente (+ 1 anno) e i due anni successivi
         start_date: randomDate( prevDate, new Date(tempYear, 0, 1)),
         // status casuale presi da array statuses - solo le prime 6 (su 10) possono essere non attive
@@ -190,8 +190,8 @@ const generateOperations = ( mines ) => {
       const resources = [];
       // progressivo per inserimento ID
       let i = 1
-      // a partire dalla data di inizo e ogni tre mesi fino alla data di fine
-      for ( let date = new Date( startDate ); date <= new Date(endDate); date.setMonth(date.getMonth() + 3) ) {
+      // a partire dalla data di inizo e ogni  mese fino alla data di fine
+      for ( let date = new Date( startDate ); date <= new Date(endDate); date.setMonth(date.getMonth() + 1 ) ) {
           // tutte le miniere attive in quel periodo
           const tempMines = mines.filter( mine => new Date( mine.start_date ) < new Date( date ) )
           // per ogni miniera attiva in quel periodo  - vengono generati numeri casuali per il consumo

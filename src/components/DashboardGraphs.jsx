@@ -1,8 +1,9 @@
 
 import PropTypes from 'prop-types';
 import styled from "styled-components"
-
+// caricamento dei grafici
 import PriceGraph from './graphs/PriceGraph';
+import ExtractionsGraph from './graphs/ExtractionsGraph';
 
 
 function DashboardGraphs({graph,functions}) {
@@ -21,7 +22,8 @@ function DashboardGraphs({graph,functions}) {
         </div> 
 
         <div>
-        { graph === 1 && <PriceGraph />}
+        { graph === 1 && <PriceGraph /> }
+        { graph === 2 && <ExtractionsGraph/> }
         </div>
       </>
     )
