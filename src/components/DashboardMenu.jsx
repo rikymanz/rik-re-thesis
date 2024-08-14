@@ -21,6 +21,11 @@ function DashboardMenu({ functions }) {
               <MyTitle>Storico estrazioni</MyTitle>
               <MyDesc>Estrazione dei vari minerali nel tempo</MyDesc>
           </MenuButton>
+
+          <MenuButton onClick={ () => handleClick(3) }>
+              <MyTitle>Info miniere</MyTitle>
+              <MyDesc>Informazioni dettagliate sulle singole miniere</MyDesc>
+          </MenuButton>
   
         </div> 
       </>

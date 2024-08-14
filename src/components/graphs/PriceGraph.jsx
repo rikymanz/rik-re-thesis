@@ -105,6 +105,7 @@ function PriceGraph() {
         status === 'idle' && 
             <div>
                 <LineChart
+                  style={{padding:50}}
                   xAxis={[
                       {
                       dataKey: 'unix',

@@ -4,7 +4,7 @@ import styled from "styled-components"
 // caricamento dei grafici
 import PriceGraph from './graphs/PriceGraph';
 import ExtractionsGraph from './graphs/ExtractionsGraph';
-
+import MinesInfo from './graphs/MinesInfo';
 
 function DashboardGraphs({graph,functions}) {
 
@@ -24,6 +24,7 @@ function DashboardGraphs({graph,functions}) {
         <div>
         { graph === 1 && <PriceGraph /> }
         { graph === 2 && <ExtractionsGraph/> }
+        { graph === 3 && <MinesInfo/> }
         </div>
       </>
     )

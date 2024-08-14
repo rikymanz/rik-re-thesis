@@ -33,7 +33,7 @@ export const initData = createAsyncThunk(
     data.mines = generateMines();
     data.operations = generateOperations( data.mines);
     data.marketPrices = generateMarketPrices();
-    data.resourceManagement = generateResourceManagement(data.mines);
+    data.resourceManagement = generateResourceManagement(data.mines, data.operations);
     data.weatherData = generateWeatherData(data.mines);
 
     return data;

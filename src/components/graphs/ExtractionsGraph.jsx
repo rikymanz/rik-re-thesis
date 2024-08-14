@@ -32,8 +32,29 @@ function ExtractionsGraph(){
         },
       };
 
+       /**
+     * Funzione di click (in realtà scatta quanto viene modificata) della checbox relativa alla selezione delle serie
+     * @param {*} mine_id : ID della miniera cliccata
+     * @param {*} checkBoxElement : elemento cliccato
+     */    
+    const handleCheckChange = ( mine_id , checkBoxElement ) => {
+        // stato dopo il click della checkbox
+        const isChecked = checkBoxElement.checked
+        // copia dell'array selected, verrà modificata la copia e poi verrò chiamato setSelection, per modificare la variabile di stato
+        let tempData = JSON.parse( JSON.stringify( mines ) )
+        // scorrimento array, se la serie è quella cliccata cambia l'attributo selected
+        tempData = tempData.map( row => {
+            // modifica attributo selected solo per il minerale clicclato
+            if( row.id === mine_id ) row.selected = isChecked
+            return row
+        }) // fine map
+        // modifica dell'array di stato selection
+        setMines( tempData )
+    } // fine handleCheckChange
+
     // funzione per il settaggio dei dati per il grafico, chiamato all'inizio e alla selezione delle miniere
     const initGraphData = async() => {
+        setStatus( 'loading' )
         // minerali presenti nelle miniere
         const minerals = [...new Set(mines.map(item => item.type_of_mineral))];
         // array vuoto che conterrà tutti i dati
@@ -43,7 +64,8 @@ function ExtractionsGraph(){
             // riga di un'operazione di estrazione
             const operation = data.operations[index];
             // miniera dell'estrazione
-            const mine = mines.find( temp => temp.id === operation.mine_id )
+            const mine = mines.filter( temp => temp.selected ).find( temp => temp.id === operation.mine_id )
+            if( !mine ) continue;
             // minerale estratto dalla miniera
             const mineral = mine.type_of_mineral
             // anno di etrazione
@@ -71,7 +93,7 @@ function ExtractionsGraph(){
         } // fine for scorrimento operations
         
         setGraphData( tempData )
-        console.log( tempData )
+
         // aspetto 1 secondo per dare il tempo al grafico di aggiornarsi senza bug
         await new Promise(resolve => setTimeout(resolve, 1000));
         // variabile di stato che permetta la visualizzazione del grafico
@@ -81,8 +103,8 @@ function ExtractionsGraph(){
 
      // chiamato all'aprisi dell'applicazione e ogni volta che viene cliccata una checkbox (modifica dell'array selection)
      useEffect(() => {
-          
-        initGraphData()
+
+            initGraphData()
    
      }, [ mines ]); // fine useEffect
 
@@ -96,6 +118,23 @@ function ExtractionsGraph(){
 
     return(
         <>
+            {/** Div con le checkbox - Daranno il via alla modifica dell'array selection, quindi dell'array graphData e quindi del grafico */}
+            <div style={{textAlign:"center"}}>
+                {
+                    mines.map( ( mine , index) => (
+                        <span key={index} data-toggle="tooltip" data-placement="top" title={`${mine.name}:${mine.type_of_mineral}`}>
+                        <input type="checkbox" 
+                               checked={ mine.selected } 
+                               onChange={ ( e ) => handleCheckChange( mine.id,e.currentTarget )} 
+                               /> 
+                               
+                        {mine.id} &nbsp;&nbsp;
+                        </span>
+                    ))
+                }
+            
+            </div>
+
             {/** Schermata di caricamento */}
             { status === 'loading' && <div>Loading ...</div>}
             {/** Grafico preso dal LineChart di MUI */}
@@ -104,6 +143,7 @@ function ExtractionsGraph(){
                 <div>
                         
                         <BarChart
+                            style={{padding:50}}
                             dataset={graphData}
                             xAxis={[{ scaleType: 'band', dataKey: 'year' , valueFormatter: ( value ) => value.toString(),}]}
                             series={[

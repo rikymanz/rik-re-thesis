@@ -1,11 +1,11 @@
 // generazione casuali dei valori
 
-// Minerali possibili da estrarre
+// Minerali possibili da estrarre. price è il prezzo di partenza. Quantity è un coefficente per la quantità estratta. Più alto è e più è facile da estrarre
 const mineralTypes = [
-    {name:"Iridio",price:20000},
-    {name:"Platino",price:3000},
-    {name:"Oro",price:8000},
-    {name:"Argento",price:70},
+    {name:"Iridio",price:20000,quantity:1},
+    {name:"Platino",price:3000,quantity:1},
+    {name:"Oro",price:8000,quantity:2},
+    {name:"Argento",price:70,quantity:10},
 ];
 
 // data inizio e fine della quale generare i dati
@@ -14,9 +14,9 @@ const endDate = new Date(2023, 0, 2);
 
 // settaggi modificabili per cambiare la base dalla quale vengono estratti i valori casuali
 const settings = [
-  {dimension:1,quantity:100,cost:1200,water:200,energy:100,waste:50},
-  {dimension:2,quantity:500,cost:3000,water:1000,energy:1000,waste:500},
-  {dimension:3,quantity:2000,cost:8000,water:5000,energy:3000,waste:1000},
+  {dimension:1,quantity:50,cost:5000,water:2000,energy:12000,waste:500},
+  {dimension:2,quantity:200,cost:10000,water:5000,energy:25000,waste:1000},
+  {dimension:3,quantity:1000,cost:25000,water:15000,energy:55000,waste:2500},
 ] // fine settings
 
 // data casuale presa tra due dati inserite come parametro
@@ -111,40 +111,36 @@ const generateMines = ( ) => {
 
 // anagrafica con le operazioni di estrazione
 const generateOperations = ( mines ) => {
-    const n = 150
+    // array vuoto che conterrà le operazioni di estrazione
     const operations = [];
-    // finchè l'array nonn raggiunge la lunghezza desiderta - tenta di aggiungere operation
-    while ( operations.length < n ) {
-      // viene creata l'operazione di estrazione, i dati verranno inseriti successivamente
-      const operation = {
-        id:0,
-        date: randomDate(new Date(mines[0].start_date), new Date(2023, 0, 1)),
-      }
-      // statuses[Math.floor(Math.random() * statuses.length)]
-      // miniere possibili, presenti in quel periodo
-      const tempMines = mines.filter( row => new Date(row.start_date) < new Date(operation.date))
-      // variabile di controllo, è un numero casuale che scarte l'operation in base alla quantità di miniere. Serve per fare in modo che vengano fatte pià operazioni se sono presenti più miniere
-      const control = Math.floor(Math.random() * 10 ) + 1
-      // scarto dell'n-esima operazione - casuale
-      if( control > tempMines.length ) continue
-      // miniera temporanea da assengnare
-      const tempMine = tempMines[ Math.floor(Math.random() * tempMines.length) ]
-      // assegnazione miniera tra quelle possibili
-      operation.mine_id = tempMine.id
-      // settings da prendere in base alla grandezza della miniera, sarà la base per il calcolo randomico
-      const tempSetting = settings.find( row => row.dimension === tempMine.dimension )
-      operation.extracted_quantity = randomValue( tempSetting.quantity )
-      operation.operation_cost =  randomValue( tempSetting.cost )
-      // aggiunta all'array operations
-      operations.push(operation);
-    } // fine for inserimento operations
-    // ordinamento in base alla data di estrazione
-    operations.sort((a,b)=>(new Date(a.date) - new Date(b.date)))
-    // assegna l'id in base alla data, simula che l'ordine di inserimento sia stato raelmente progressivo
-    for (let i = 0; i < operations.length; i++) {
-      const operation = operations[i];
-      operation.id = i + 1
-    } // fine for
+    let i = 1
+    // per ongni mese
+    for ( let date = new Date(startDate); new Date(date) <= new Date(endDate); date.setMonth(date.getMonth() + 1) ) {
+        // tutte le possibili miniere di quel mese
+        const tempMines = mines.filter( row => new Date(row.start_date) < new Date(date))
+        // per ogni miniera presente in quel mese
+        for (let index = 0; index < tempMines.length; index++) {  
+            // miniera
+            const tempMine = tempMines[index];
+            // valore casuale - l'operazione verrà inserita il 50% delle volte
+            const control = Math.floor(Math.random() * 10 )
+            if( control < 5 ) continue
+            // settings in base alla dimnesionde della miniera
+            const tempSetting = settings.find( row => row.dimension === tempMine.dimension )
+            // creazione operazione utilizzando funzioni di estrazione casuale di valori
+            const operation = {
+              id:i,
+              mine_id:tempMine.id,
+              extracted_quantity:randomValue( tempSetting.quantity ),
+              operation_cost:randomValue( tempSetting.cost ),
+              date:getMyIsoDate(date)
+            }
+            // inserimento nell'array
+            operations.push(operation);
+            i ++
+        } // fine for
+        
+    } // fine for mesi
 
     return operations;
   } // fine generateOperations
@@ -185,7 +181,7 @@ const generateOperations = ( mines ) => {
   } // fine generateMarketPrices
 
   // dati sulle risorse consumate dalle varie miniere - Ogni tre mesi vengono generati dati sulle miniere attive
-  const generateResourceManagement = ( mines ) => {
+  const generateResourceManagement = ( mines , operations ) => {
       // array vuoto, andrà riempito con i dati 
       const resources = [];
       // progressivo per inserimento ID
@@ -196,18 +192,35 @@ const generateOperations = ( mines ) => {
           const tempMines = mines.filter( mine => new Date( mine.start_date ) < new Date( date ) )
           // per ogni miniera attiva in quel periodo  - vengono generati numeri casuali per il consumo
           for (let index = 0; index < tempMines.length; index++) {
-            const mine = tempMines[index];
+            const isoDate = getMyIsoDate(date) // data in foramto iso
+            const mine = tempMines[index]; // n-esima miniera
+            // controlla se la miniera era operativa quel mese
+            const isOperative = operations.find( row => row.date === isoDate && row.mine_id === mine.id  )
+            // se non lo era salta il mese
+            if( !isOperative ) continue;
             const setting = settings.find( row => row.dimension === mine.dimension )
             // compilazione oggetto da inserire
             const resource = {
               id: i,
               mine_id: mine.id,
-              date: getMyIsoDate(date),
+              date: isoDate ,
               // numero casuali per l'utilizzo di risorse
               water_usage: randomValue( setting.water ),
               energy_consumption: randomValue( setting.energy ),
               waste_generated: randomValue( setting.waste ),
             };
+
+            // in caso di zone aride viene alzato il consumo dell'acuqa e abbassatao quello dell'energia
+            if( mine.zone === 1 ){
+                resource.water_usage = resource.water_usage * 2
+                resource.energy_consumption = resource.energy_consumption * 0.7
+            // in caso di zone fredde  viene alzato il consumo dell'energia e abbassatao quello dell'acqua
+            }else if( mine.zone === 3 ){
+                resource.water_usage = resource.water_usage * 0.5
+                resource.energy_consumption = resource.energy_consumption * 2
+            } // fine ifl else per alterazione valori in base alla zona
+
+            // aggiunta all'array della riga
             resources.push(resource);
             i ++
           } // fine for 1
