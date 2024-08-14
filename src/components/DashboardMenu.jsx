@@ -26,6 +26,13 @@ function DashboardMenu({ functions }) {
               <MyTitle>Info miniere</MyTitle>
               <MyDesc>Informazioni dettagliate sulle singole miniere</MyDesc>
           </MenuButton>
+
+          <MenuButton onClick={ () => handleClick(4) }>
+              <MyTitle>Costi e ricavi</MyTitle>
+              <MyDesc>
+                Informazioni su costi e ricavi
+              </MyDesc>
+          </MenuButton>
   
         </div> 
       </>

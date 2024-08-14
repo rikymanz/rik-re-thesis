@@ -2,10 +2,10 @@
 
 // Minerali possibili da estrarre. price è il prezzo di partenza. Quantity è un coefficente per la quantità estratta. Più alto è e più è facile da estrarre
 const mineralTypes = [
-    {name:"Iridio",price:20000,quantity:1},
-    {name:"Platino",price:3000,quantity:1},
-    {name:"Oro",price:8000,quantity:2},
-    {name:"Argento",price:70,quantity:10},
+    {name:"Iridio",price:10000,quantity:0.5},
+    {name:"Platino",price:1500,quantity:1},
+    {name:"Oro",price:4000,quantity:1},
+    {name:"Argento",price:100,quantity:5},
 ];
 
 // data inizio e fine della quale generare i dati
@@ -14,9 +14,9 @@ const endDate = new Date(2023, 0, 2);
 
 // settaggi modificabili per cambiare la base dalla quale vengono estratti i valori casuali
 const settings = [
-  {dimension:1,quantity:50,cost:5000,water:2000,energy:12000,waste:500},
-  {dimension:2,quantity:200,cost:10000,water:5000,energy:25000,waste:1000},
-  {dimension:3,quantity:1000,cost:25000,water:15000,energy:55000,waste:2500},
+  {dimension:1,quantity:5,cost:5000,water:2000,energy:12000,waste:500},
+  {dimension:2,quantity:15,cost:10000,water:5000,energy:25000,waste:1000},
+  {dimension:3,quantity:35,cost:25000,water:15000,energy:55000,waste:2500},
 ] // fine settings
 
 // data casuale presa tra due dati inserite come parametro
@@ -127,11 +127,13 @@ const generateOperations = ( mines ) => {
             if( control < 5 ) continue
             // settings in base alla dimnesionde della miniera
             const tempSetting = settings.find( row => row.dimension === tempMine.dimension )
+            // info sul minerale estratto
+            const tempMineral = mineralTypes.find( row => row.name === tempMine.type_of_mineral )
             // creazione operazione utilizzando funzioni di estrazione casuale di valori
             const operation = {
               id:i,
               mine_id:tempMine.id,
-              extracted_quantity:randomValue( tempSetting.quantity ),
+              extracted_quantity:randomValue( tempSetting.quantity ) * tempMineral.quantity,
               operation_cost:randomValue( tempSetting.cost ),
               date:getMyIsoDate(date)
             }

@@ -96,7 +96,7 @@ function MinesInfo() {
             tempRow.waste_generated += resourcesRow.waste_generated
 
         } // fine for
-
+        // ordinamento per anno
         tempData.sort((a,b) => a.year - b.year);
 
         setMineData({info:tempInfo, data:tempData})
