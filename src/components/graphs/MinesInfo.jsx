@@ -28,7 +28,7 @@ function MinesInfo() {
         },
       ],
       //width: 500,
-      height: 600,
+      height: 500,
       sx: {
         [`.${axisClasses.left} .${axisClasses.label}`]: {
           transform: 'translate(-20px, 0)',
@@ -137,7 +137,7 @@ function MinesInfo() {
         { (status === 'loading') && <div>Loading..</div> }
         { (selectedMine && mineData.data && status==='idle') && <div>
 
-          <div style={{display:'inline-block',width:"30%",verticalAlign:'top',padding:100}}>
+          <div style={{display:'inline-block',width:"30%",verticalAlign:'top',padding:100,fontSize:'13px'}}>
               <InfoRow>
                   <span>ID:</span>&nbsp;&nbsp;
                   <span>{selectedMine.id}</span>
@@ -160,7 +160,7 @@ function MinesInfo() {
               </InfoRow>
               <InfoRow>
                   <span>Zona:</span>&nbsp;&nbsp;
-                  <span>{selectedMine.zone === 1 ? 'Arida (1)' : selectedMine.dimension === 2 ? 'Temperata (2)' : 'Fredda (3)'}</span>
+                  <span>{selectedMine.location} ({selectedMine.zone === 1 ? 'Arida' : selectedMine.zone === 2 ? 'Temperata' : 'Fredda'})</span>
               </InfoRow>
 
           </div>

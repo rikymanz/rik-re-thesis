@@ -11,7 +11,7 @@ function CostsIncomeGraph() {
 
     const data = useSelector( selectData )
     // variabile per la selezione del mese e dell'anno da analizzare
-    const [selection,setSelection] = useState( 2021 )
+    const [selection,setSelection] = useState( 2023 )
     const [status,setStatus] = useState('loading')
     const [graphData, setGraphData] = useState(null)
 
@@ -24,6 +24,7 @@ function CostsIncomeGraph() {
             energy_consumption: 0,
             water_usage: 0,
             waste_generated: 0,
+            total_cost:0
         }
     }
 
@@ -34,7 +35,7 @@ function CostsIncomeGraph() {
           },
         ],
         //width: 500,
-        height: 600,
+        height: 500,
         sx: {
           [`.${axisClasses.left} .${axisClasses.label}`]: {
             transform: 'translate(-20px, 0)',
@@ -66,6 +67,7 @@ function CostsIncomeGraph() {
             const value = data.marketPrices.find( row => row.date === operation.date )[mineral]
 
             tempRow.operation_cost += operation.operation_cost
+            tempRow.total_cost += operation.operation_cost
             tempRow.extracted_value += operation.extracted_quantity * value
             
         } // fine for operations e settaggio info riguardanti le operazioni di estrazione
@@ -81,8 +83,13 @@ function CostsIncomeGraph() {
             const tempRow = tempData.find( row => row.yearMonth === yearMonth)
 
             tempRow.water_usage += resourcesRow.water_usage
+            tempRow.total_cost += resourcesRow.water_usage
+
             tempRow.energy_consumption += resourcesRow.energy_consumption
+            tempRow.total_cost += resourcesRow.energy_consumption
+
             tempRow.waste_generated += resourcesRow.waste_generated
+            tempRow.total_cost += resourcesRow.waste_generated
 
         } // fine for
         // ordinamento per anno
@@ -131,7 +138,8 @@ function CostsIncomeGraph() {
                                 { dataKey: 'energy_consumption', label: 'Energia consumata', valueFormatter:(value) => `${value} €` },
                                 { dataKey: 'water_usage', label: 'Acqua utilizzata', valueFormatter:(value) => `${value} €` },
                                 { dataKey: 'waste_generated', label: 'Rifiuti', valueFormatter:(value) => `${value} €` },
-                                { dataKey: 'extracted_value', label: 'Guadagno', valueFormatter:(value) => `${value} €` },
+                                { dataKey: 'extracted_value', label: 'Guadagno', color:'green', valueFormatter:(value) => `${value} €` },
+                                { dataKey: 'total_cost', label: 'Costo totale', color:'red', valueFormatter:(value) => `${value} €` },
                             ]}
                             {...chartSetting}
                         />

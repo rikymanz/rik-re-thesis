@@ -33,6 +33,13 @@ function DashboardMenu({ functions }) {
                 Informazioni su costi e ricavi
               </MyDesc>
           </MenuButton>
+
+          <MenuButton onClick={ () => handleClick(5) }>
+              <MyTitle>Impatto ambientale</MyTitle>
+              <MyDesc>
+                Informazioni su temperature e precipitazioni
+              </MyDesc>
+          </MenuButton>
   
         </div> 
       </>

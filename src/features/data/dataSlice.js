@@ -31,10 +31,11 @@ export const initData = createAsyncThunk(
     // numero di miniere da generare. Da  questo dipendono anche i dati successivi
     const data = {}
     data.mines = generateMines();
-    data.operations = generateOperations( data.mines);
     data.marketPrices = generateMarketPrices();
-    data.resourceManagement = generateResourceManagement(data.mines, data.operations);
     data.weatherData = generateWeatherData(data.mines);
+    data.operations = generateOperations( data.mines , data.weatherData );
+    data.resourceManagement = generateResourceManagement(data.mines, data.operations , data.weatherData);
+
 
     return data;
 
