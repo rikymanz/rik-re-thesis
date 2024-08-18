@@ -41,7 +41,7 @@ const NavBar = () => {
                 <NavButton selected={page === 2} onClick={() => dispatch(setPage(2))}>
                     Tabelle
                 </NavButton> 
-
+                
                 <NavButton onClick={() => handleDeleteDataClick()} >
                     Elimina dati 
                 </NavButton>  

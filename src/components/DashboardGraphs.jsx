@@ -7,6 +7,7 @@ import ExtractionsGraph from './graphs/ExtractionsGraph';
 import MinesInfo from './graphs/MinesInfo';
 import CostsIncomeGraph from './graphs/CostsIncomeGraph';
 import WeatherInfo from './graphs/WeatherInfo';
+import PLInfo from './graphs/PLInfo';
 
 function DashboardGraphs({graph,functions}) {
 
@@ -16,7 +17,7 @@ function DashboardGraphs({graph,functions}) {
 
     return (
       <>
-        <div style={{padding:50}}>
+        <div style={{paddingTop:35,paddingBottom:15,paddingLeft:30}}>
             <MyTitle onClick={()=>handleClick(0)}>
                 <i className="bi bi-arrow-left"></i> &nbsp;&nbsp;
                 Indietro
@@ -29,6 +30,7 @@ function DashboardGraphs({graph,functions}) {
         { graph === 3 && <MinesInfo/> }
         { graph === 4 && <CostsIncomeGraph/> }
         { graph === 5 && <WeatherInfo/> }
+        { graph === 6 && <PLInfo/> }
         </div>
       </>
     )

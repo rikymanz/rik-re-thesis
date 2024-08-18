@@ -2,11 +2,18 @@
 
 // Minerali possibili da estrarre. price è il prezzo di partenza. Quantity è un coefficente per la quantità estratta. Più alto è e più è facile da estrarre
 const mineralTypes = [
-    {name:"Iridio",price:5000,quantity:0.5},
-    {name:"Platino",price:1500,quantity:1},
-    {name:"Oro",price:3000,quantity:1},
-    {name:"Argento",price:50,quantity:5},
+    {name:"Iridio",price:7000,quantity:0.5},
+    {name:"Platino",price:1500,quantity:2},
+    {name:"Oro",price:4000,quantity:1},
+    {name:"Argento",price:100,quantity:40},
 ];
+
+// coefficente aumento spese, simula l'inflazione e fa in modo che venva compensato l'aumento dei prezzi di vendita
+const getCoeff = (year) => {
+    const diff = year - 2005
+    if( diff <= 0 ) return 1
+    else return 1 + (0.05 * diff)
+} // fine get coeff
 
 // data inizio e fine della quale generare i dati
 const startDate = new Date(2000, 0, 2); 
@@ -14,9 +21,9 @@ const endDate = new Date(2023, 0, 2);
 
 // settaggi modificabili per cambiare la base dalla quale vengono estratti i valori casuali
 const settings = [
-  {dimension:1,quantity:5,cost:5000,water:2000,energy:12000,waste:5000},
-  {dimension:2,quantity:15,cost:10000,water:5000,energy:25000,waste:20000},
-  {dimension:3,quantity:35,cost:25000,water:15000,energy:55000,waste:60000},
+  {dimension:1,quantity:5,cost:3500,water:3500,energy:3500,waste:2000},
+  {dimension:2,quantity:10,cost:7000,water:7000,energy:7000,waste:5000},
+  {dimension:3,quantity:25,cost:20000,water:20000,energy:20000,waste:15000},
 ] // fine settings
 
 // data casuale presa tra due dati inserite come parametro
@@ -41,7 +48,7 @@ const randomWeather = ( date , zone ) => {
     let precipitation
     // zona 1 - zona arida
     if( zone === 1 ){
-        temperature = Math.floor(Math.random() * 15 ) + 30
+        temperature = Math.floor(Math.random() * 10 ) + 30
         const isRaining = Math.floor(Math.random() * 10 ) < 4 ? true : false
         precipitation = isRaining ? Math.floor(Math.random() * 30 ) + 5 : 0
     }else if( zone === 2 ){ //zona 2 temperata
@@ -49,7 +56,7 @@ const randomWeather = ( date , zone ) => {
         const isRaining = Math.floor(Math.random() * 10 ) < 7 ? true : false
         precipitation = isRaining ? Math.floor(Math.random() * 90 ) + 5 : 0
     }else{ //zona 3 fredda
-        temperature = Math.floor(Math.random() * 15 ) - 10
+        temperature = Math.floor(Math.random() * 25 ) - 10
         const isRaining = Math.floor(Math.random() * 10 ) < 7 ? true : false
         precipitation = isRaining ? Math.floor(Math.random() * 200 ) + 5 : 0
     }
@@ -82,7 +89,9 @@ const generateMines = ( ) => {
     // creazione di ogni singola miniera
     for (let i = 0; i < n; i++) {
       const tempYear = prevDate.getFullYear() + 2  
-      const mineral = i === 0 ? 'Oro' : i === 1 ? 'Argento' : i === 2 ? 'Iridio' : i === 3 ? 'Platino' : mineralTypes[Math.floor(Math.random() * mineralTypes.length)].name
+      // le prime 4 hanno ognuna i 4 minerali diversi. Le altre saranni casuali
+      const mineral = i < 4 ? mineralTypes[i].name : mineralTypes[Math.floor(Math.random() * mineralTypes.length)].name
+
       const mine = {
         // id progressivo
         id: i + 1, 
@@ -134,14 +143,14 @@ const generateOperations = ( mines , weatherData ) => {
               id:i,
               mine_id:tempMine.id,
               extracted_quantity:randomValue( tempSetting.quantity ) * tempMineral.quantity,
-              operation_cost:randomValue( tempSetting.cost ),
+              operation_cost:randomValue( tempSetting.cost ) * getCoeff( date.getFullYear() ),
               date:getMyIsoDate(date)
             }
             // estrazioni dati meterologici
             const weather = weatherData.find( row => row.location === tempMine.location && operation.date === row.date )
             // se le precipitazioni nel mese dell'estrazione per quella location raggiungono valori di 130 e 80. La produzione viene nettamente diminuita
-            if( weather.precipitation > 130 ) operation.extracted_quantity = operation.extracted_quantity * 0.2
-            else if( weather.precipitation > 80 ) operation.extracted_quantity = operation.extracted_quantity * 0.5
+            if( weather.precipitation > 130 ) operation.extracted_quantity = operation.extracted_quantity * 0.7
+            else if( weather.precipitation > 80 ) operation.extracted_quantity = operation.extracted_quantity * 0.85
             // inserimento nell'array
             operations.push(operation);
             i ++
@@ -212,26 +221,26 @@ const generateOperations = ( mines , weatherData ) => {
               mine_id: mine.id,
               date: isoDate ,
               // numero casuali per l'utilizzo di risorse
-              water_usage: randomValue( setting.water ),
-              energy_consumption: randomValue( setting.energy ),
-              waste_generated: randomValue( setting.waste ),
+              water_usage: randomValue( setting.water ) * getCoeff( date.getFullYear() ),
+              energy_consumption: randomValue( setting.energy ) * getCoeff( date.getFullYear() ),
+              waste_generated: randomValue( setting.waste ) * getCoeff( date.getFullYear() ),
             };
 
             // in caso di zone aride viene alzato il consumo dell'acuqa e abbassatao quello dell'energia
             if( mine.zone === 1 ){
-                resource.water_usage = resource.water_usage * 2
-                resource.energy_consumption = resource.energy_consumption * 0.7
+                resource.water_usage = resource.water_usage * 1.5
+                resource.energy_consumption = resource.energy_consumption * 0.9
             // in caso di zone fredde  viene alzato il consumo dell'energia e abbassatao quello dell'acqua
             }else if( mine.zone === 3 ){
-                resource.water_usage = resource.water_usage * 0.5
-                resource.energy_consumption = resource.energy_consumption * 2
+                resource.water_usage = resource.water_usage * 0.8
+                resource.energy_consumption = resource.energy_consumption * 1.5
             } // fine ifl else per alterazione valori in base alla zona
 
             // ulteriori modifiche in base alla temperatura
             const weather = weatherData.find( row => row.location === mine.location && resource.date === row.date )
             // in base alle tempertaure raggiunte si modificano di nuovo l'utilizzo di acqua e energia
-            if( weather.temperature > 35 ) resource.water_usage = resource.water_usage * 2
-            if( weather.temperature < 0 ) resource.energy_consumption = resource.energy_consumption * 2
+            if( weather.temperature > 35 ) resource.water_usage = resource.water_usage * 1.5
+            if( weather.temperature < 0 ) resource.energy_consumption = resource.energy_consumption * 1.5
             // inserimento nell'array
 
             // aggiunta all'array della riga

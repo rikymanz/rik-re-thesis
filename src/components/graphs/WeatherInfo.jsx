@@ -26,18 +26,18 @@ function WeatherInfo(){
         if( !row ) return {temperature,precipitation}
         if( row.precipitation > 130 ){
             precipitation.level = 2
-            precipitation.message = 'Le abbondanti precipitazioni hanno influito sull produzione del mese. Efficienza 20% '
+            precipitation.message = 'Le abbondanti precipitazioni hanno influito sulla produzione del mese. Efficienza 50% '
         }else if( row.precipitation > 80 ){
             precipitation.level = 1
-            precipitation.message = 'Le abbondanti precipitazioni hanno influito sull produzione del mese. Efficienza 50% '
+            precipitation.message = 'Le abbondanti precipitazioni hanno influito sulla produzione del mese. Efficienza 70% '
         }
         if( row.temperature < 0 ){
             temperature.level = 1
-            temperature.message = 'Le temperatura sotto 0 gradi ha causato un consumo energetio doppio rispetto al solito'
+            temperature.message = 'Le temperatura sotto 0 gradi ha causato un consumo energetico maggiore'
         }
         if( row.temperature > 35){
             temperature.level = 2
-            temperature.message = 'Le temperatura sopra 35 gradi ha causato un consumo di acqua doppio rispetto al solito'
+            temperature.message = 'Le temperatura sopra 35 gradi ha causato un consumo di acqua maggiore'
         }
 
         return {temperature,precipitation}

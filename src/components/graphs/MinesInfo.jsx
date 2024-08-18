@@ -49,7 +49,7 @@ function MinesInfo() {
         return {
           year,
           operation_cost:0,
-          //extracted_quantity:0,
+          extracted_value:0,
           energy_consumption:0,
           water_usage:0,
           waste_generated:0,
@@ -76,6 +76,10 @@ function MinesInfo() {
             if( !tempData.find( row => row.year === year ) ) tempData.push(getEmptyRow( year )) 
             const tempRow = tempData.find( row => row.year === year)
 
+            const mineral = data.mines.find( row => row.id === operation.mine_id ).type_of_mineral
+            const mineralCost = data.marketPrices.find( row => row.date === operation.date )[mineral]
+
+            tempRow.extracted_value += ( operation.extracted_quantity * mineralCost )
             tempRow.operation_cost += operation.operation_cost
             //tempRow.extracted_quantity += operation.extracted_quantity
             
@@ -98,6 +102,9 @@ function MinesInfo() {
         } // fine for
         // ordinamento per anno
         tempData.sort((a,b) => a.year - b.year);
+
+        tempData = tempData.map( row => ({...row,
+            total_cost:row.energy_consumption + row.operation_cost + row.waste_generated + row.water_usage}) )
 
         setMineData({info:tempInfo, data:tempData})
 
@@ -175,6 +182,8 @@ function MinesInfo() {
                       { dataKey: 'energy_consumption', label: 'Energia consumata', valueFormatter:(value) => `${value} €` },
                       { dataKey: 'water_usage', label: 'Acqua utilizzata', valueFormatter:(value) => `${value} €` },
                       { dataKey: 'waste_generated', label: 'Rifiuti', valueFormatter:(value) => `${value} €` },
+                      { dataKey: 'total_cost', label: 'Costo totale', color:'red',valueFormatter:(value) => `${value} €` },
+                      { dataKey: 'extracted_value', label: 'Valore estratto', color:'green', valueFormatter:(value) => `${value} €` },
                   ]}
                   {...chartSetting}
               />

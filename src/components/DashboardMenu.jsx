@@ -40,6 +40,13 @@ function DashboardMenu({ functions }) {
                 Informazioni su temperature e precipitazioni
               </MyDesc>
           </MenuButton>
+
+          <MenuButton onClick={ () => handleClick(6) }>
+              <MyTitle>Dettaglio costi e ricavi</MyTitle>
+              <MyDesc>
+                Analisi mensile costi e ricavi e confronto con l{"'"} anno precedente
+              </MyDesc>
+          </MenuButton>
   
         </div> 
       </>

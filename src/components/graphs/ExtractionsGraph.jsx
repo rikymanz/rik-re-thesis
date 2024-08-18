@@ -110,11 +110,7 @@ function ExtractionsGraph(){
 
     const valueFormatter = (value) => `${value}Kg`;
 
-    /*
-     [...new Set(mines.map(item => item.type_of_mineral))].map( mineral => ({ 
-                                    dataKey: mineral, label: mineral, valueFormatter 
-                                }))
-     */
+
 
     return(
         <>
