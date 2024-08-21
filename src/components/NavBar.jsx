@@ -31,17 +31,19 @@ const NavBar = () => {
     
     return (
         <MyNavBar>
-            <NavElement style={{textAlign:'center'}}>
+            <NavElement height={'10%'}>
                 <img style={{maxWidth:'90px'}} src={'/mineralia_logo_2.png'} />
             </NavElement>
-            <NavElement>
+            <NavElement  height={'60%'}>
                 <NavButton selected={page === 1} onClick={() => dispatch(setPage(1))} >
                     Dashboard
                 </NavButton>  
                 <NavButton selected={page === 2} onClick={() => dispatch(setPage(2))}>
                     Tabelle
                 </NavButton> 
-                
+            </NavElement>
+
+            <NavElement>
                 <NavButton onClick={() => handleDeleteDataClick()} >
                     Elimina dati 
                 </NavButton>  
@@ -59,10 +61,13 @@ const MyNavBar = styled.div`
     height:100vh;
     background:rgb(217,217,217);
     display:inline-block;
+    overflow:hidden;
 `
 
 const NavElement = styled.div`
     padding:10px;
+    height:${props => props.height};
+    text-align:center;
 
 `
 const NavButton = styled.button`

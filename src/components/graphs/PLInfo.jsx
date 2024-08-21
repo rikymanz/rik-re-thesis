@@ -27,8 +27,9 @@ function PLInfo(){
         setSelection( {year:selectedYear*1,month:selectedMonth*1} )
     } // fine handleDateChange
 
-    const getEmptyRow = ( year , month , mine_id ) => (
-        { 
+    const getEmptyRow = ( year , month , mine_id ) => {
+
+        let obj = { 
             year , month , mine_id ,
             extracted_quantity:0,
             extracted_value:0,
@@ -38,7 +39,18 @@ function PLInfo(){
             water_usage:0,
             total_cost:0
         }
-    )
+
+        const minerals = [...new Set(data.mines.map(item => item.type_of_mineral))]
+
+        for (let index = 0; index < minerals.length; index++) {
+            const mineral = minerals[index];
+            obj[mineral] = 0;
+            
+        }
+
+        return obj
+
+    }
 
     const getRawValue = (year, month , column , mine) => {
 
@@ -130,7 +142,7 @@ function PLInfo(){
             
             dataRow.extracted_quantity += rowOperation.extracted_quantity
             dataRow.extracted_value += ( rowOperation.extracted_quantity * tempPrice )
-
+            dataRow[tempMineral] += ( rowOperation.extracted_quantity * tempPrice )
             dataRow.operation_cost += rowOperation.operation_cost
 
             tempData.push( dataRow )
@@ -235,9 +247,16 @@ function PLInfo(){
 
                     <MyRow title={'1 - Ricavi'} background={'#9933ff'} color={'white'} selection={selection} functions={functions} column={'extracted_value'} mine={0} />
                     {  
-                        tableData.mines.map( (row) => (
-                            <MyRow key={row.name} title={row.name} background={'white'} color={'black'} selection={selection} functions={functions}  column={'extracted_value'} mine={row.id} />
+                        [...new Set(tableData.mines.map(item => item.type_of_mineral))].map( temp  => (
+                            <>
+                            <MyRow title={temp} background={'#E5CCFF'} color={'black'} selection={selection} functions={functions}  column={temp} mine={0} />
+
+                            {tableData.mines.filter( row => temp === row.type_of_mineral ).map( (row) => (
+                                <MyRow key={row.name} title={row.name} background={'white'} color={'black'} selection={selection} functions={functions}  column={'extracted_value'} mine={row.id} />
+                            ))}
+                            </>
                         ))
+                        
                     }
                     <MyRow title={'2 - Costi'} background={'#9933FF'} color={'white'} selection={selection} functions={functions}  column={'total_cost'} mine={0} />
                     
@@ -304,8 +323,10 @@ const MyColumns = styled.div`
     vertical-align:top;
     width:${props=>props.width + '%'};
     text-align:${props=>props.textalign};
-    font-size:13px;
+    font-size:11px;
     font-style:${props=>props.fontStyle};
+    overflow:hidden;
+    height:100%;
 `
 const MyRowStyle = styled.div`
     padding-top:3px;

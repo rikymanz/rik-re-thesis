@@ -84,6 +84,7 @@ const ContentDiv = styled.div`
   width:85%;
   vertical-align:top;
   background:#fafafa;
+  overflow:hidden;
 `
 
 export default HomePage

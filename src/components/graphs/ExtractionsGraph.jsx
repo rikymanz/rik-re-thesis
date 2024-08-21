@@ -56,7 +56,7 @@ function ExtractionsGraph(){
     const initGraphData = async() => {
         setStatus( 'loading' )
         // minerali presenti nelle miniere
-        const minerals = [...new Set(mines.map(item => item.type_of_mineral))];
+        const minerals = [...new Set(mines.map(item => item.type_of_mineral))]
         // array vuoto che conterrà tutti i dati
         let tempData = []
         // per ogni operations
@@ -114,29 +114,34 @@ function ExtractionsGraph(){
 
     return(
         <>
-            {/** Div con le checkbox - Daranno il via alla modifica dell'array selection, quindi dell'array graphData e quindi del grafico */}
-            <div style={{textAlign:"center"}}>
-                {
-                    mines.map( ( mine , index) => (
-                        <span key={index} data-toggle="tooltip" data-placement="top" title={`${mine.name}:${mine.type_of_mineral}`}>
-                        <input type="checkbox" 
-                               checked={ mine.selected } 
-                               onChange={ ( e ) => handleCheckChange( mine.id,e.currentTarget )} 
-                               /> 
-                               
-                        {mine.id} &nbsp;&nbsp;
-                        </span>
-                    ))
-                }
-            
-            </div>
-
+        
             {/** Schermata di caricamento */}
             { status === 'loading' && <div>Loading ...</div>}
             {/** Grafico preso dal LineChart di MUI */}
             {
                 status === 'idle' && 
                 <div>
+                    <div style={{display:'inline-block',width:'20%',verticalAlign:'top',padding:20,paddingTop:100}}>
+                        
+                        {
+                        mines.map( ( mine , index) => (
+                            <div key={index}>
+                                <input type="checkbox" 
+                                    checked={ mine.selected } 
+                                    onChange={ ( e ) => handleCheckChange( mine.id,e.currentTarget )} 
+                                /> 
+                                {' '}
+                                <span>
+                                    {mine.name} ( {mine.dimension === 1 ? 'piccola' : mine.dimension === 2 ? 'media' : 'grande'} ) - {mine.type_of_mineral}
+                                </span>
+                                
+                            </div>
+                     
+                            ))
+                        }
+
+                    </div> 
+                    <div style={{display:'inline-block',width:'80%',verticalAlign:'top'}}>
                         
                         <BarChart
                             style={{padding:50}}
@@ -151,7 +156,9 @@ function ExtractionsGraph(){
                             {...chartSetting}
                         />
 
+                    </div> 
                 </div>
+                
                 
             }
         </>

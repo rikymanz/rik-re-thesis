@@ -14,7 +14,7 @@ function DashboardMenu({ functions }) {
         <div style={{padding:50}}>
           <MenuButton onClick={ () => handleClick(1) }>
               <MyTitle>Storico prezzi</MyTitle>
-              <MyDesc>Andamento dei prezzi di Ferro, Rame, Platino, Oro, Argento</MyDesc>
+              <MyDesc>Andamento dei prezzi di Iridio, Platino, Oro, Argento</MyDesc>
           </MenuButton>
 
           <MenuButton onClick={ () => handleClick(2) }>
@@ -29,16 +29,12 @@ function DashboardMenu({ functions }) {
 
           <MenuButton onClick={ () => handleClick(4) }>
               <MyTitle>Costi e ricavi</MyTitle>
-              <MyDesc>
-                Informazioni su costi e ricavi
-              </MyDesc>
+              <MyDesc>Grafico costi e ricavi negli anni</MyDesc>
           </MenuButton>
 
           <MenuButton onClick={ () => handleClick(5) }>
               <MyTitle>Impatto ambientale</MyTitle>
-              <MyDesc>
-                Informazioni su temperature e precipitazioni
-              </MyDesc>
+              <MyDesc>Informazioni su temperature e precipitazioni nei mesi dell{"'"}anno</MyDesc>
           </MenuButton>
 
           <MenuButton onClick={ () => handleClick(6) }>

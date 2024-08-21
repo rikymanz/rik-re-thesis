@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector , useDispatch } from 'react-redux';
 
-import './App.css'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage';
 import Loading from './components/Loading';
