@@ -42,7 +42,7 @@ function App() {
 
           {
             ( status === 'loading' ) && 
-            <div style={{paddingTop:400}}>
+            <div style={{paddingTop:100}}>
               <Loading />
             </div>
           }

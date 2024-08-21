@@ -9,21 +9,27 @@ import CostsIncomeGraph from './graphs/CostsIncomeGraph';
 import WeatherInfo from './graphs/WeatherInfo';
 import PLInfo from './graphs/PLInfo';
 
+/* 
+
+Componente che gestisce la visualizzazione del grafico.
+In base alla variabile di stato in DashboardPage visualizza il corrispondente grafico.
+La funzione per il cambio click e la varibile di stato graph vengono definite in DashboardPage e passate come parametro
+
+*/
 function DashboardGraphs({graph,functions}) {
 
-    const handleClick = ( id ) => {
-        functions.handleClick( id )
-    }
 
     return (
       <>
         <div style={{paddingTop:35,paddingBottom:15,paddingLeft:30}}>
-            <MyTitle onClick={()=>handleClick(0)}>
+            { /* Pulsante indietro - imposta graph a 0 - non gestito in questo componente */ }
+            <MyTitle onClick={() => functions.handleClick( 0 )}>
                 <i className="bi bi-arrow-left"></i> &nbsp;&nbsp;
                 Indietro
             </MyTitle>
         </div> 
 
+        {/* In base alla variabile graph verrà visualizzato un componente */}
         <div>
         { graph === 1 && <PriceGraph /> }
         { graph === 2 && <ExtractionsGraph/> }
@@ -46,8 +52,8 @@ function DashboardGraphs({graph,functions}) {
   `
 
   DashboardGraphs.propTypes = {
-    functions: PropTypes.object,
-    graph: PropTypes.number
+      functions: PropTypes.object,
+      graph: PropTypes.number
 ,  };
 
   export default DashboardGraphs

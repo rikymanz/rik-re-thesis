@@ -1,13 +1,18 @@
-
 import PropTypes from 'prop-types';
 import styled from "styled-components"
 
 
+/* 
+Visualizzazione del menu, al click di una delle finestre verrà cambiata la variabile di stato graph, definita in un componetnte padre, 
+attraverso alla funzione handleClick, sempre definita nel componente padre e passata come parametro
+*/
 function DashboardMenu({ functions }) {
 
+    // handle click della funzione, richiama quella passata come parametro.
+    // più leggibile il codice ridichiarando una versione locale del metodo
     const handleClick = ( id ) => {
         functions.handleClick( id )
-    }
+    } // fine handleClick
 
     return (
       <>

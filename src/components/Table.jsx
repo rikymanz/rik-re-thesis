@@ -5,9 +5,11 @@ import { selectData } from './../features/data/dataSlice'
 
 import styled from 'styled-components';
 
+// Componente di visualizzazioine di una singola tabella, visualizza semplicemente la tabella passata come parametro
 function Table({table}) {
-
+    // tutti i dati generati dall'applicazione
     const data = useSelector( selectData )
+    // solo i dati che interessa visualizzare
     const tableData = data[table]
     let titles = []
     // array con i soli titoli

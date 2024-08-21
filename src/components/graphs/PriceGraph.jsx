@@ -1,8 +1,11 @@
 
 import { LineChart } from "@mui/x-charts"
 import { useState , useEffect } from "react"
+
 import { useSelector } from 'react-redux';
+
 import { selectData } from "../../features/data/dataSlice";
+import Loading from "../Loading";
 
 // componente per la visualizzazione dei grafici dei prezzi - Usato per fare dei test sulla libreria dei grafici
 function PriceGraph() {
@@ -99,7 +102,7 @@ function PriceGraph() {
         <input type="checkbox" checked={ selection.find( row => row.id === "Iridio" ).selected} onChange={ ( e ) => handleCheckChange("Iridio",e.currentTarget)}  /> Iridio &nbsp;&nbsp;
       </div>
       {/** Schermata di caricamento */}
-      { status === 'loading' && <div>Loading ...</div>}
+      { status === 'loading' && <Loading />}
       {/** Grafico preso dal LineChart di MUI */}
       {
         status === 'idle' && 

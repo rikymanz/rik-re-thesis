@@ -1,14 +1,17 @@
-import Form from 'react-bootstrap/Form';
 import { useState } from 'react';
 
 import styled from 'styled-components';
+import Form from 'react-bootstrap/Form';
 
 import Table from './../components/Table';
 
+
+// pagina per la scelta e la visualizzazione delle tabelle
 function TablesPage() {
 
+  // variabile di stato del componente per la selezione
   const [selectedTable,setSelectedTable] = useState(null)
-
+  // evento che scatta al change della select -  valorizza la variabile di stato
   const handleTabledChange = (selectInput) =>{
     setSelectedTable( selectInput.value === '-' ? null : selectInput.value )
   }

@@ -3,7 +3,6 @@ import { useSelector , useDispatch } from 'react-redux';
 
 import styled from 'styled-components';
 
-import Loading from './../components/Loading';
 import NavBar from '../components/NavBar';
 import DashboardPage from './DashboardPage';
 import TablesPage from './TablesPage';
@@ -18,17 +17,19 @@ import {
   selectPage,
 } from './../features/data/dataSlice'
 
-
+// Componente padre dell'applicazione
 function HomePage() {
-
+  // dispatch per chiamare le funzioni di modifica variabili di stato globali dello slice
   const dispatch = useDispatch()
-  const data = useSelector( selectData )
-  const status = useSelector( selectStatus )
-  const page = useSelector( selectPage )
+  // Variabili di stato dell'applicazione
+  const data = useSelector( selectData ) // dati, generati casualmente
+  const status = useSelector( selectStatus ) // indica se si sta effettuando la generazione dei dati (simulazione di fetch)
+  const page = useSelector( selectPage ) // pagina da visualizzare (Dashboard o tabelle), i singoli grafici vengono gestiti direttamente dai componenti figli
 
+  // funzione evento di click del pulsante generazione dati
   const handleInit = () => {
     dispatch( initData() )
-  }
+  } // fine handleInit
 
   // all'avvio, e solo all'avvio del componente
   useEffect(() => {
@@ -45,7 +46,7 @@ function HomePage() {
       <NavBar />
       <ContentDiv>
 
-
+          {/* Compare solo se i dati non sono stati generati, non devono essere presenti nel local storage */}
           {
             ( status === 'idle' && !data ) &&
             <div style={{textAlign:'center',paddingTop:250}}>
@@ -56,6 +57,11 @@ function HomePage() {
             
           }
 
+          {/* 
+           Se i dati sono presenti, dopo il click del pulsante o perchè già presenti nel local storage,
+           mostra la pagina di dashbosard (default) o quella delle tabelle, in base al pulsante cliccato nel menu a sinistra
+           
+           */}
           {
             ( status === 'idle' && data ) &&
             <>
@@ -65,10 +71,7 @@ function HomePage() {
             </>
           }
 
-          {
-            ( status === 'loading' ) &&
-            <Loading />
-          }
+   
 
  
       </ContentDiv>

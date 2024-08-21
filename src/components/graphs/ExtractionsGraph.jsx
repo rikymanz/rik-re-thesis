@@ -1,6 +1,9 @@
 import { useState,useEffect } from 'react'
 import { useSelector } from 'react-redux'
+
 import { selectData } from "../../features/data/dataSlice"
+import Loading from '../Loading';
+
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 
@@ -116,7 +119,7 @@ function ExtractionsGraph(){
         <>
         
             {/** Schermata di caricamento */}
-            { status === 'loading' && <div>Loading ...</div>}
+            { status === 'loading' && <Loading />}
             {/** Grafico preso dal LineChart di MUI */}
             {
                 status === 'idle' && 

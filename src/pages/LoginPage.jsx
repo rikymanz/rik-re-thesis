@@ -1,4 +1,3 @@
-
 import { useDispatch } from 'react-redux';
 import {
     login
@@ -6,11 +5,13 @@ import {
 
 import styled from 'styled-components';
 
+// pagina di login fittizia, non permette input ma solo il click del pulsante di login
 function LoginPage() {
 
     const dispatch = useDispatch()    
-
+    // evento click del pulsante di login
     const handleLogin = () => {
+        // funzione nel dataSlice - Gestire la valorizzazione dell'utente (fittizzio) e salverà una sessione nel localStorage
         dispatch( login() )
     }
 

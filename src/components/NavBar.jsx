@@ -1,34 +1,40 @@
 import styled from "styled-components";
 import { useSelector , useDispatch } from 'react-redux';
 
+// funzioni dello slice, gestioni delle variabili di stato "globali"
 import {  
     setData,
     setUser,
     setPage,
-
     selectPage
-  
-
   } from './../features/data/dataSlice'
   
-
+/*
+    Menu laterale applicazione.
+*/
 const NavBar = () => {       
-    
+    // dichiarazione dispatch per cambiare le varabili di stato dell'applicazione
     const dispatch = useDispatch()
+    // variabile di stato per la getione della macro visualizzazione della pagina
     const page = useSelector( selectPage )
-
+    // funzione evento per il click del pulsante per la cancellazione dei dati
     const handleDeleteDataClick = () => {
+        // cancellazione dal local storage dei dati generati dall'applicazione
         localStorage.removeItem("data");
+        // cancellazione della variabile di stato - viene impstata a null
         dispatch( setData(null))
-    }
+    } // fine handleDeleteDataClick
 
+    // funzione evento di click pulsante di logout
     const handleLogOutClick = () => {
+        // cancellazione utente da local storage
         localStorage.removeItem("user");
+        // cancellazione utente variabile di stato
         dispatch( setUser(null))
-    }
+    } // fine handleLogOutClick
     
     
-    
+    // in base ai pulsanti cliccati viene settata la variabile che gestisce la visualizzazione dei grafici o delle tabelle. Oppure la cancellazione delle variabili di stato, che a loro volta gestiscono altre visualizzazioni
     return (
         <MyNavBar>
             <NavElement height={'10%'}>

@@ -1,13 +1,13 @@
 import {useState, useEffect} from 'react'
 import { useSelector } from 'react-redux'
+
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
 
 import styled from 'styled-components';
 
-
-
 import { selectData } from '../../features/data/dataSlice'
+import Loading from '../Loading';
 
 // componente per la visualizzazione delle informazioni sulle miniere
 function MinesInfo() {
@@ -141,7 +141,9 @@ function MinesInfo() {
     
     <div>
         { (!selectedMine && status === 'idle') && <div>Selezionare miniera dal menu in alto</div> }
-        { (status === 'loading') && <div>Loading..</div> }
+
+        { (status === 'loading') && <Loading />}
+
         { (selectedMine && mineData.data && status==='idle') && <div>
 
           <div style={{display:'inline-block',width:"30%",verticalAlign:'top',padding:100,fontSize:'13px'}}>
