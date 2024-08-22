@@ -124,7 +124,7 @@ function ExtractionsGraph(){
             {
                 status === 'idle' && 
                 <div>
-                    <div style={{display:'inline-block',width:'20%',verticalAlign:'top',padding:20,paddingTop:100}}>
+                    <div style={{display:'inline-block',width:'25%',verticalAlign:'top',padding:20,paddingTop:100}}>
                         
                         {
                         mines.map( ( mine , index) => (
@@ -134,8 +134,11 @@ function ExtractionsGraph(){
                                     onChange={ ( e ) => handleCheckChange( mine.id,e.currentTarget )} 
                                 /> 
                                 {' '}
-                                <span>
-                                    {mine.name} ( {mine.dimension === 1 ? 'piccola' : mine.dimension === 2 ? 'media' : 'grande'} ) - {mine.type_of_mineral}
+                                <span style={{fontSize:13}}>
+                                    {mine.name} 
+                                </span>{' '}
+                                <span style={{fontSize:11,fontStyle:'italic'}}>
+                                    ({mine.dimension === 1 ? 'piccola' : mine.dimension === 2 ? 'media' : 'grande'}-{mine.type_of_mineral})
                                 </span>
                                 
                             </div>
@@ -144,7 +147,7 @@ function ExtractionsGraph(){
                         }
 
                     </div> 
-                    <div style={{display:'inline-block',width:'80%',verticalAlign:'top'}}>
+                    <div style={{display:'inline-block',width:'75%',verticalAlign:'top'}}>
                         
                         <BarChart
                             style={{padding:50}}

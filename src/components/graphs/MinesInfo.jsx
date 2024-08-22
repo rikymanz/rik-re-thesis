@@ -24,14 +24,14 @@ function MinesInfo() {
     const chartSetting = {
       yAxis: [
         {
-          label: 'Spesa (€)',
+          label: '(€)',
         },
       ],
       //width: 500,
       height: 500,
       sx: {
         [`.${axisClasses.left} .${axisClasses.label}`]: {
-          transform: 'translate(-20px, 0)',
+          transform: 'translate(-50px, 0)',
         },
       },
     };
@@ -140,7 +140,10 @@ function MinesInfo() {
     </div>
     
     <div>
-        { (!selectedMine && status === 'idle') && <div>Selezionare miniera dal menu in alto</div> }
+        { (!selectedMine && status === 'idle') && 
+        <div style={{padding:100,textAlign:'center',fontSize:30,color:'darkgrey'}}>
+            Selezionare miniera dal menu in alto
+        </div> }
 
         { (status === 'loading') && <Loading />}
 
