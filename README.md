@@ -23,3 +23,9 @@ Tabelle
 
 Grafici
 - La pagina principale dell'applicazione farà scegliere tra diversi grafici
+
+
+LINK:
+https://github.com/rikymanz/rik-re-thesis/
+https://rik-re-thesis.vercel.app/
+
