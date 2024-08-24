@@ -98,16 +98,17 @@ function PLInfo(){
      * @returns - Valore formattato xx'xxx'xxx,xx € della somma di tutte le righe dell'attributo column
      */
     const getValue = (year, month , column , mine) => {
-
-
+        // tabella con tutti i dati elaborata dall'initData - si effettua una copia
         let data = JSON.parse( JSON.stringify( tableData.data ) )
+        // viene filtrata per prendere solo l'anno e il mese di riferimento
         data = data.filter( row => row.year === year && row.month <=  month )
+        // se la miniera è 0 non fa filtri (le prende tutte), altrimenti prende solo quelle relative alla miniera
         if( mine > 0 ) data = data.filter( row => row.mine_id === mine )
-
+        // somma dell'attributo inserito come parametro
         const value = data.reduce( ( a , b) => a + b[column] , 0 )
 
+        // formattazione del valore
         if( value === 0 ) return '-'
-
         return getFormattedNumber(value) + ' €'
          
     } // fine getValue
@@ -158,8 +159,7 @@ function PLInfo(){
         const tempMines = data.mines.filter( row => new Date(row.start_date) < tempDate ).map( row => ({...row,month:new Date( row.start_date ).getMonth() + 1}))
         // per ogni operations che abbian una data dell'anno attuale o del precedente
         let tempArray = data.operations.filter( row => new Date( row.date ).getFullYear() === selection.year || new Date( row.date ).getFullYear() === selection.year - 1)
-     
-
+    
         for (let index = 0; index < tempArray.length; index++) {
             const rowOperation = tempArray[index];
            
@@ -183,6 +183,7 @@ function PLInfo(){
         tempArray = data.resourceManagement.filter( row => new Date( row.date ).getFullYear() === selection.year || new Date( row.date ).getFullYear() === selection.year - 1 )
         for (let index = 0; index < tempArray.length; index++) {
             const rowResource = tempArray[index];
+            // estrazioe riga precedemente creata nel for precedente. Identificata da anno-mese-id_miniera
             let dataRow = tempData.find( row => row.year === new Date(rowResource.date).getFullYear() && row.month === new Date(rowResource.date).getMonth() + 1 && row.mine_id === rowResource.mine_id  )
 
             dataRow.energy_consumption += rowResource.energy_consumption

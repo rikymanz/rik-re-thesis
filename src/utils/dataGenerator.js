@@ -1,6 +1,9 @@
 // generazione casuali dei valori
 
-// Minerali possibili da estrarre. price è il prezzo di partenza. Quantity è un coefficente per la quantità estratta. Più alto è e più è facile da estrarre
+/* 
+Minerali possibili da estrarre. price è il prezzo di partenza. 
+Quantity è un coefficente per la quantità estratta. Più alto è e più è facile da estrarre 
+*/ 
 const mineralTypes = [
     {name:"Iridio",price:8000,quantity:0.5},
     {name:"Platino",price:1000,quantity:4},
@@ -33,7 +36,10 @@ const randomDate = ( start , end ) => {
     return date.toISOString().split('T')[0];
 } // fine randomDate
 
-// la funzione servirà poi per calcolare i valori casuali. Prende un valore di base e restituisce un valore a partire da 2/3 a 5/3. Un valore di 100 restituisce da 75 a 125
+/* 
+la funzione servirà poi per calcolare i valori casuali. 
+Prende un valore di base e restituisce un valore a partire da 3/4 a 5/4. Un valore di 100 restituisce da 75 a 125
+*/
 const randomValue = ( baseValue ) => {
     const start = baseValue * 0.75
     const end = baseValue + ( baseValue * 0.25 )

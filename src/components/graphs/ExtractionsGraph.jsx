@@ -113,8 +113,6 @@ function ExtractionsGraph(){
 
     const valueFormatter = (value) => `${value}Kg`;
 
-
-
     return(
         <>
         
@@ -154,7 +152,7 @@ function ExtractionsGraph(){
                             dataset={graphData}
                             xAxis={[{ scaleType: 'band', dataKey: 'year' , valueFormatter: ( value ) => value.toString(),}]}
                             series={[
-                                { dataKey: 'Oro', label: 'Oro', valueFormatter },
+                                { dataKey: 'Oro', label: 'Oro', valueFormatter }, // (value) => `${value}Kg`;
                                 { dataKey: 'Argento', label: 'Argento', valueFormatter },
                                 { dataKey: 'Platino', label: 'Platino', valueFormatter },
                                 { dataKey: 'Iridio', label: 'Iridio', valueFormatter },

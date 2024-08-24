@@ -116,6 +116,7 @@ function WeatherInfo(){
 
                         <div >
                             {
+                                // per ogni location dell'anno presenti nell'array tableData
                                 [...new Set(tableData.map(item => item.location))].map( (location ) => (
                                     <MyTableRow key={location}>
                                         <MyValueCol width={8} style={{paddingTop:7}}>
